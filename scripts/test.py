@@ -24,7 +24,10 @@ output_path = args.output_path
 net, initial_marking, final_marking = pm4py.read_pnml(pnml_path)
 pm4py.view_petri_net(net, initial_marking, final_marking)
 
-simulator = StochasticPetriNetSimulator(net, initial_marking, final_marking, transition_weights, log_path=input_log)
+log = pm4py.read_xes(input_log)
+log = pm4py.filter_event_attribute_values(log, 'lifecycle:transition', ['complete'], level="event", retain=True)   
+
+simulator = StochasticPetriNetSimulator(net, initial_marking, final_marking, transition_weights, log=log)
 
 log = simulator.simulate(n_traces)
 pm4py.write_xes(log, output_path)
