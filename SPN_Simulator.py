@@ -7,7 +7,7 @@ from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
 class StochasticPetriNetSimulator:
 
-    def __init__(self, net, initial_marking, final_marking, transition_weights='frequency', log=None):
+    def __init__(self, net, initial_marking, final_marking, transition_weights='frequency', log=[]):
 
         self.net = net
         self.initial_marking = initial_marking
@@ -17,7 +17,7 @@ class StochasticPetriNetSimulator:
             self.transition_weights = {t: 1 for t in list(net.transitions)}
             print('\n', self.transition_weights, '\n')
         if transition_weights == 'frequency':
-            if log == None:
+            if log == []:
                 print('Error: Empty event-log.')
             else:
                 self.log = log
