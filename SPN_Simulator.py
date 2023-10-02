@@ -38,32 +38,18 @@ class StochasticPetriNetSimulator:
     def return_transitions_frequency(self):
         alignments_ = alignments.apply_log(self.log, self.net, self.initial_marking, self.final_marking, parameters={"ret_tuple_as_trans_desc": True})
         aligned_traces = [[y[0] for y in x['alignment'] if y[1]!='>>'] for x in alignments_]
-        xor_p = dict()
 
-        for p in list(self.net.places):
-            arc_p = [a.target for a in list(self.net.arcs) if a.source==p]
-            if len(arc_p)>1:
-                xor_p[p] = arc_p
-
-        t_frequencies = {t: [0, 0] for t in [x for a in xor_p.values() for x in a]}
+        frequency_t = {t: 0 for t in self.net.transitions}
 
         for trace in aligned_traces:
-            nodes_fired = [t[1] for t in trace if t[1] != '>>']
-            for p in xor_p.keys():
-                flag_t = []
-                for t in xor_p[p]:
-                    if t.name in nodes_fired:
-                        flag_t.append(t)
+            for align in trace:
+                name_t = align[1]
+                for t in list(self.net.transitions):
+                    if t.name == name_t:
+                        frequency_t[t] += 1
+                        break
 
-                if flag_t:
-                    for t in xor_p[p]:
-                        t_frequencies[t][1] += len(flag_t)
-                    for t in flag_t:
-                        t_frequencies[t][0] += 1
-
-        t_weights = {x : t_frequencies[x][0]/t_frequencies[x][1]for x in t_frequencies.keys()}
-
-        return t_weights
+        return frequency_t
 
 
     def return_enabled_transitions(self, tkns):
