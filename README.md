@@ -3,7 +3,6 @@ Stochastic Petri Net Simulator
 
 ### How to use:
 
-<pre>
 ```python
 import pm4py
 from SPN_Simulator import StochasticPetriNetSimulator
@@ -19,4 +18,3 @@ log = simulator.simulate(n_traces)
 
 pm4py.write_xes(log, 'example_outputs/purchasing_sim.xes')
 ```
-</pre>
