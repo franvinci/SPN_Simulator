@@ -97,7 +97,7 @@ class StochasticPetriNetSimulator:
 
     def return_transitions_frequency(self):
         alignments_ = alignments.apply_log(self.log, self.net, self.initial_marking, self.final_marking, parameters={"ret_tuple_as_trans_desc": True})
-        aligned_traces = [[y[0] for y in x['alignment'] if y[1]!='>>'] for x in alignments_]
+        aligned_traces = [[y[0] for y in x['alignment'] if y[0][1]!='>>'] for x in alignments_]
 
         frequency_t = {t: 0 for t in self.net.transitions}
 
