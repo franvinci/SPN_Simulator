@@ -25,7 +25,7 @@ class StochasticPetriNetSimulator:
             else:
                 self.log = log
                 self.transition_weights = self.return_transitions_frequency()
-                print('\n', self.transition_weights, '\n')
+                # print('\n', self.transition_weights, '\n')
         if transition_weights == 'manually':
             self.transition_weights = dict()
             print('Insert weight for each transition...')
@@ -164,9 +164,11 @@ class StochasticPetriNetSimulator:
         simulated_traces = []
         for i in tqdm(range(n_istances)):
             trace = self.simulate_one_istance()
-            simulated_traces.extend([(i + 1, e) for e in trace])
+            simulated_traces.extend([(str(i + 1), e) for e in trace])
 
         log_data = pd.DataFrame(simulated_traces, columns=['case:concept:name', 'concept:name'])
+        log_data['time:timestamp'] = range(len(log_data))
+        log_data['time:timestamp'] = pd.to_datetime(log_data['time:timestamp'])
         log_sim = pm4py.convert_to_event_log(log_data)
 
         return log_sim 
